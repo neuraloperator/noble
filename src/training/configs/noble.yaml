@@ -1,0 +1,59 @@
+params:  
+  network:
+    model: fno
+    n_modes: 256
+    hidden_channels: 24
+    n_layers: 12
+    projection_channel_ratio: 4
+    group_norm: False
+    in_channels: 1
+    out_channels: 1
+
+  optimizer:
+    optimizer_name: 'adamw'
+    lr: 1e-3
+    weight_decay: 0
+    history_size: 10
+    scheduler: ReduceLROnPlateauTrain
+    patience: 8
+    scheduler_factor: 70
+
+  embeddings:
+    sine_embeddings_freq: null
+    scale_sine_embeddings: null
+    hof_model_embeddings: null 
+    e_features_to_embed: ["slope", "intercept"]
+
+  training:
+    epochs: 400
+    train_loss: L4
+    train_loss_type: rel
+    batch_size_train: 64
+    batch_size_test: 64
+    evaluate_features: True
+    seed: 0
+    device: cuda:0
+    custom_prefix: ""
+    
+  data_generation:
+    cell_name: PVALB_689331391
+    dt: 0.02
+    ds_factor: 3
+    signal_length: 515.0
+    window: True
+  
+  logging:
+    print_freq: 1
+    plot_freq: 25
+    model_save_freq: 25
+    save_model: True
+    
+  finetune:
+    pretrained_model_path: False
+    feature_loss: False
+  
+  paths: #TODO: Add paths to the data, e features, model, and figures for training in the training .sh script
+    data_path: ""
+    e_features_path: "" 
+    model_path: "" 
+    figure_path: "" 

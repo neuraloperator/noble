@@ -1,0 +1,21 @@
+name: noble
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.10
+  - pip
+  - numpy
+  - pandas
+  - scikit-learn
+  - scipy
+  - matplotlib
+  - pip:
+      - efel
+      - neuron
+      - torch
+      - wandb
+      - pys
+      - pyyaml
+      - tensorly
+      - tensorly-torch
