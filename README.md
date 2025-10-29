@@ -3,7 +3,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 
-$\texttt{NOBLE}$ is a neural operator-based framework for modeling and predicting electrophysiological responses in biological neurons. The project leverages Fourier Neural Operators (FNO) to learn complex mappings between input stimuli and neuronal responses, enabling efficient simulation and analysis of neural dynamics. This repository accompanies our recently accepted work to NeurIPS 2025.
+$\texttt{NOBLE}$ is a neural operator-based framework for modeling and predicting electrophysiological responses in biological neurons. The project leverages Fourier Neural Operators (FNO) to learn complex mappings between input stimuli and neuronal responses, enabling efficient simulation and analysis of neural dynamics. This repository accompanies our [NeurIPS 2025 paper](https://arxiv.org/abs/2506.04536).
 
 ## Installation
 
