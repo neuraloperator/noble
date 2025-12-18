@@ -112,11 +112,11 @@ def train_model(config: dict, wandb_run: wandb.sdk.wandb_run.Run) -> None:
     # ============================================================================
     in_channels = fno_config['in_channels']
 
-    if embedding_config['sine_embeddings_freq'] is not None:
-        in_channels += 2 * int(embedding_config['sine_embeddings_freq'])
+    if embedding_config['num_current_embeddings'] is not None:
+        in_channels += 2 * int(embedding_config['num_current_embeddings'])
         
-    if embedding_config['hof_model_embeddings'] is not None and features_to_embed:
-        in_channels += 2 * int(embedding_config['hof_model_embeddings']) * len(features_to_embed)
+    if embedding_config['num_hof_model_embeddings'] is not None and features_to_embed:
+        in_channels += 2 * int(embedding_config['num_hof_model_embeddings']) * len(features_to_embed)
 
     norm = 'group_norm' if fno_config['group_norm'] else None
 

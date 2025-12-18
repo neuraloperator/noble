@@ -19,9 +19,10 @@ params:
     scheduler_factor: 70
 
   embeddings:
-    sine_embeddings_freq: null
-    scale_sine_embeddings: null
-    hof_model_embeddings: null 
+    num_current_embeddings: null
+    type_current_embeddings: null
+    num_hof_model_embeddings: null 
+    type_hof_model_embeddings: null
     e_features_to_embed: ["slope", "intercept"]
 
   training:

@@ -5,6 +5,10 @@
 
 $\texttt{NOBLE}$ is a neural operator-based framework for modeling and predicting electrophysiological responses in biological neurons. The project leverages Fourier Neural Operators (FNO) to learn complex mappings between input stimuli and neuronal responses, enabling efficient simulation and analysis of neural dynamics. This repository accompanies our [NeurIPS 2025 paper](https://arxiv.org/abs/2506.04536).
 
+## Press Releases
+- Caltech — *“Modeling Neurons with the Help of AI”* ([Read here](https://www.caltech.edu/about/news/modeling-neurons-with-the-help-of-ai))
+- Cedars-Sinai — *“Research Tip Sheet: Liver Cancer Trends + AI In Science, Testing”* ([Read here](https://www.cedars-sinai.org/newsroom/research-tip-sheet-liver-cancer-trends--ai-in-science-testing/))
+
 ## Installation
 
 ### Prerequisites

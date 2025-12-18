@@ -30,9 +30,10 @@ optimiser_config=(
 
 # embedding settings
 embedding_config=(
-  --sine_embeddings_freq 9
-  --scale_sine_embeddings freq
-  --hof_model_embeddings 1
+  --num_current_embeddings 9
+  --type_current_embeddings freq
+  --num_hof_model_embeddings 1
+  --type_hof_model_embeddings freq
 )
 
 # loss settings
@@ -43,12 +44,12 @@ loss_config_flags=(
 
 # training run flags
 training_flags=(
-  --epochs 1 #300
+  --epochs 300
   --batch_size_train 64
   --batch_size_test 64
-  --plot_freq 1 #25
-  --save_model True
-  --model_save_freq 1
+  --plot_freq 500
+  --save_model False
+  --model_save_freq 500
   --print_freq 1
 )
 

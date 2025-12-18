@@ -32,9 +32,10 @@ optimiser_config=(
 
 # embedding settings
 embedding_config=(
-  --sine_embeddings_freq 9
-  --scale_sine_embeddings freq
-  --hof_model_embeddings 1
+  --num_current_embeddings 9
+  --type_current_embeddings freq
+  --num_hof_model_embeddings 1
+  --type_hof_model_embeddings freq
 )
 
 # loss settings

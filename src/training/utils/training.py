@@ -58,15 +58,19 @@ def log_training_setup(
     print(f"Total trainable parameters: {count_model_params(fno_model)}")
 
     print("\n### EMBEDDINGS ###")
+    ## Encoding the stimulus current amplitude
     embedding_config = config['params']['embeddings']
-    if embedding_config['sine_embeddings_freq'] is not None:
-        print(f"Using Sine Embeddings with {embedding_config['sine_embeddings_freq']} frequencies")
-        if embedding_config['scale_sine_embeddings'] == 'amp':
-            print(f"Using Sine Embeddings with Amplitude Scaling")
-        elif embedding_config['scale_sine_embeddings'] == 'freq':
-            print(f"Using Sine Embeddings with Frequency Scaling")
+    if embedding_config['num_current_embeddings'] is not None:
+        print(f"Encoding the stimulus current amplitude with {embedding_config['num_current_embeddings']} sinusoidal embedding frequencies")
+        
+        if embedding_config['type_current_embeddings'] == 'amp':
+            print(f"Scaling the amplitude of the sinusoidal embeddings by the amplitude of the stimulus current")
+
+        elif embedding_config['type_current_embeddings'] == 'freq':
+            print(f"Scaling the frequency of the sinusoidal embeddings by the amplitude of the stimulus current")
     
-    if embedding_config['hof_model_embeddings'] is not None and embedding_config['e_features_to_embed']:
+    ## Encoding the Hall of Fame neuron model
+    if embedding_config['num_hof_model_embeddings'] is not None and embedding_config['e_features_to_embed']:
         e_feats_to_embed = embedding_config['e_features_to_embed']
         if len(e_feats_to_embed) == 1:
             e_feat_str = e_feats_to_embed[0]
@@ -74,8 +78,16 @@ def log_training_setup(
             e_feat_str = f"{e_feats_to_embed[0]} and {e_feats_to_embed[1]}"
         else:
             e_feat_str = f"{', '.join(e_feats_to_embed[:-1])}, and {e_feats_to_embed[-1]}"
-        print(f"Embedding the {e_feat_str} for each neuron using NeRF-style encoding with {embedding_config['hof_model_embeddings']} frequencies")
-
+        
+        hof_type = embedding_config.get('type_hof_model_embeddings')
+        print(f"Encoding the {e_feat_str} for each HoF neuron model with {embedding_config['num_hof_model_embeddings']} sinusoidal embedding frequencies")
+        
+        if hof_type == 'amp':
+            print(f"Scaling the amplitude of the sinusoidal embeddings by the amplitude of {e_feat_str}")
+        
+        elif hof_type == 'freq':
+            print(f"Scaling the frequency of the sinusoidal embeddings by {e_feat_str}")
+            
     print("\n### OPTIMIZER ###")
     print(optimizer)
     

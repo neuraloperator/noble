@@ -60,23 +60,31 @@ def build_model_string(config: dict, in_channels: int) -> str:
     
     embedding_config = config['params']['embeddings']
     
-    if embedding_config.get('sine_embeddings_freq') is not None:
-        freq = embedding_config["sine_embeddings_freq"]
-        scale_type = embedding_config.get('scale_sine_embeddings')
+    if embedding_config.get('num_current_embeddings') is not None:
+        current_freq = embedding_config["num_current_embeddings"]
+        current_scale_type = embedding_config.get('type_current_embeddings')
         
-        if scale_type == 'freq':
-            model_str += f'_AmpEmbeddings-FreqScaledNeRF-nfreq-{freq}'
-        elif scale_type == 'amp':
-            model_str += f'_AmpEmbeddings-AmpScaledNeRF-nfreq-{freq}'
+        if current_scale_type == 'freq':
+            model_str += f'_AmpEmbeddings-FreqScaledNeRF-nfreq-{current_freq}'
+
+        elif current_scale_type == 'amp':
+            model_str += f'_AmpEmbeddings-AmpScaledNeRF-nfreq-{current_freq}'
+
         else:
-            model_str += f'_NeRF-embeddings-nfreq-{freq}'
+            model_str += f'_NeRF-embeddings-nfreq-{current_freq}'
     
-    if embedding_config.get('constant_amp_embeddings'):
-        model_str += '_AmpEmbeddings-ConstantInTime'
-    
-    if embedding_config.get('hof_model_embeddings') is not None:
-        hof_freq = int(embedding_config["hof_model_embeddings"])
-        model_str += f'_HoFEmbeddings-FreqScaledNeRF-nfreq-{hof_freq}'
+    if embedding_config.get('num_hof_model_embeddings') is not None:
+        hof_freq = int(embedding_config["num_hof_model_embeddings"])
+        hof_scale_type = embedding_config.get('type_hof_model_embeddings')
+
+        if hof_scale_type == 'freq':
+            model_str += f'_HoFEmbeddings-FreqScaledNeRF-nfreq-{hof_freq}'
+
+        elif hof_scale_type == 'amp':
+            model_str += f'_HoFEmbeddings-AmpScaledNeRF-nfreq-{hof_freq}'
+
+        else:
+            model_str += f'_HoFEmbeddings-NeRF-nfreq-{hof_freq}'
     
     return model_str
 
@@ -151,41 +159,44 @@ def build_wandb_run_name(config: dict, custom_prefix: str = None) -> str:
         factor = optimizer_cfg["scheduler_factor"] / 100
         patience = optimizer_cfg["patience"]
         save_name += f'_scheduler-RLonPTest_lr_{lr}_factor-{factor}_patience-{patience}'
+
     elif scheduler == 'ReduceLROnPlateauTrain':
         factor = optimizer_cfg["scheduler_factor"] / 100
         patience = optimizer_cfg["patience"]
         save_name += f'_scheduler-RLonPTrain_lr_{lr}_factor-{factor}_patience-{patience}'
-    elif scheduler == 'CosineAnnealingWarmRestarts':
-        t_0 = optimizer_cfg["t_0"]
-        t_mult = optimizer_cfg["t_mult"]
-        eta_min = optimizer_cfg["eta_min"]
-        save_name += f'_scheduler-CAWR_lr_{lr}_T0-{t_0}_Tmult-{t_mult}_eta_min-{eta_min}'
+        
     else:  # scheduler is None
         save_name += f'_scheduler-None_lr_{lr}'
     
     # Embedding configuration
     has_embeddings = False
 
-    if embedding_cfg.get('sine_embeddings_freq') is not None:
-        freq = embedding_cfg["sine_embeddings_freq"]
-        scale_type = embedding_cfg.get('scale_sine_embeddings')
+    if embedding_cfg.get('num_current_embeddings') is not None:
+        current_freq = embedding_cfg["num_current_embeddings"]
+        current_scale_type = embedding_cfg.get('type_current_embeddings')
         
-        if scale_type == 'freq':
-            save_name += f'_AmpEmbed-FreqScaledNeRF-nfreq-{freq}'
-        elif scale_type == 'amp':
-            save_name += f'_AmpEmbed-AmpScaledNeRF-nfreq-{freq}'
+        if current_scale_type == 'freq':
+            save_name += f'_AmpEmbed-FreqScaledNeRF-nfreq-{current_freq}'
+        elif current_scale_type == 'amp':
+            save_name += f'_AmpEmbed-AmpScaledNeRF-nfreq-{current_freq}'
         else:
-            save_name += f'_Unscaled-NeRF-embeddings-nfreq-{freq}'
+            save_name += f'_Unscaled-NeRF-embeddings-nfreq-{current_freq}'
         
         has_embeddings = True
     
-    if embedding_cfg.get('constant_amp_embeddings'):
-        save_name += '_AmpEmbed-ConstInTime'
-        has_embeddings = True
-    
-    if embedding_cfg.get('hof_model_embeddings') is not None:
-        hof_freq = int(embedding_cfg["hof_model_embeddings"])
-        save_name += f'_HoFEmbed-FreqScaledNeRF-nfreq-{hof_freq}'
+    if embedding_cfg.get('num_hof_model_embeddings') is not None:
+        hof_freq = int(embedding_cfg["num_hof_model_embeddings"])
+        hof_scale_type = embedding_cfg.get('type_hof_model_embeddings')
+
+        if hof_scale_type == 'freq':
+            save_name += f'_HoFEmbed-FreqScaledNeRF-nfreq-{hof_freq}'
+
+        elif hof_scale_type == 'amp':
+            save_name += f'_HoFEmbed-AmpScaledNeRF-nfreq-{hof_freq}'
+
+        else:
+            save_name += f'_HoFEmbed-UnscaledNeRF-nfreq-{hof_freq}'
+
         has_embeddings = True
     
     if not has_embeddings:

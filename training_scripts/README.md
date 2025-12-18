@@ -48,18 +48,19 @@ Below, we highlight the main configurable parameters used across both scripts.
 
 ## Embedding parameters
 
-- `--sine_embeddings_freq` — Number of frequencies for sinusoidal embedding of the stimulus current amplitude
-- `--scale_sine_embeddings` — Scaling type for the sinusoidal embedding (`amp`, `freq`, or `none`)
-- `--hof_model_embeddings` — Number of frequencies for sinusoidal embedding of neuron models
+- `--num_current_embeddings` — Number of sinusoidal embedding frequencies for encoding the stimulus current amplitude
+- `--type_current_embeddings` — Scaling type for the sinusoidal embedding (`amp`, `freq`, or `none`)
+- `--num_hof_model_embeddings` — Number of sinusoidal embedding frequencies for encoding the Hall of Fame neuron model
+- `--type_hof_model_embeddings` — Scaling type for the sinusoidal embedding of the Hall of Fame neuron model (`amp`, `freq`, or `none`)
 - `--e_features_to_embed` — Electrophysiological features of neuron models to embed
 
 Note:
-- `--sine_embeddings_freq` and `--hof_model_embeddings` accept an integer or `null` (for no embedding)
+- `--num_current_embeddings` and `--num_hof_model_embeddings` accept an integer or `null` (for no embedding)
 - `--e_features_to_embed` accepts a list of feature names
 
 **Example:**
 ```bash
---sine_embeddings_freq 9 --scale_sine_embeddings freq --hof_model_embeddings 1 --e_features_to_embed: ["slope", "intercept"]
+--num_current_embeddings 9 --type_current_embeddings freq --num_hof_model_embeddings 1 --type_hof_model_embeddings freq --e_features_to_embed: ["slope", "intercept"]
 ```
 
 ## Training parameters

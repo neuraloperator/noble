@@ -89,39 +89,61 @@ def build_input_with_embeddings(input_batch, embedding_config, features_to_embed
     """Helper: builds input with sine, amplitude, and model embeddings."""
     input_batch_transformed = input_batch
 
-    # ---- Sine embeddings ----
-    if embedding_config['sine_embeddings_freq'] is not None:
-        if embedding_config['scale_sine_embeddings'] == 'amp':
-            sine_embed = Construct_Embedded_Nerf_Batch(
-                input_batch, num_frequencies=int(embedding_config['sine_embeddings_freq']),
-                embed_amp=True, scale_amp=True, device=device
-            )
-        elif embedding_config['scale_sine_embeddings'] == 'freq':
-            sine_embed = Construct_Embedded_Nerf_Batch(
-                input_batch, num_frequencies=int(embedding_config['sine_embeddings_freq']),
-                embed_amp=True, scale_freq=True, device=device
-            )
+    # ---- Stimulus Amplitude embeddings ----
+    if embedding_config['num_current_embeddings'] is not None:
+        if embedding_config['type_current_embeddings'] == 'amp':
+            sine_embed = Construct_Embedded_Nerf_Batch(input_batch=input_batch,
+                                                       num_frequencies=int(embedding_config['num_current_embeddings']),
+                                                       device=device,
+                                                       embed_amp=True,
+                                                       scale_amp=True)
+
+        elif embedding_config['type_current_embeddings'] == 'freq':
+            sine_embed = Construct_Embedded_Nerf_Batch(input_batch=input_batch,
+                                                       num_frequencies=int(embedding_config['num_current_embeddings']),
+                                                       device=device,
+                                                       embed_amp=True,
+                                                       scale_freq=True)
+
         else:
-            sine_embed = Construct_Embedded_Nerf_Batch(
-                input_batch, num_frequencies=int(embedding_config['sine_embeddings_freq']),
-                device=device
-            )
+            sine_embed = Construct_Embedded_Nerf_Batch(input_batch=input_batch,
+                                                       num_frequencies=int(embedding_config['num_current_embeddings']),
+                                                       device=device,
+                                                       embed_amp=True)
+                                                       
         input_batch_transformed = torch.cat((input_batch_transformed, sine_embed), dim=1)
 
     # ---- HoF model embeddings ----
-    if embedding_config['hof_model_embeddings'] is not None and features_to_embed:
+    if embedding_config['num_hof_model_embeddings'] is not None and features_to_embed:
         batched_embedding_feats = sampled_embeddings
         feature_embeds = []
+
         for _, feature_tensor in batched_embedding_feats.items():
-            embed = Construct_Embedded_Nerf_Batch(
-                input_batch=input_batch,
-                num_frequencies=int(embedding_config['hof_model_embeddings']),
-                device=device,
-                embed_model=True,
-                scale_freq=True,
-                feature_tensor=feature_tensor)
+            
+            if embedding_config.get('type_hof_model_embeddings') == 'amp':
+                embed = Construct_Embedded_Nerf_Batch(input_batch=input_batch,
+                                                      num_frequencies=int(embedding_config['num_hof_model_embeddings']),
+                                                      device=device,
+                                                      embed_model=True,
+                                                      scale_amp=True,
+                                                      feature_tensor=feature_tensor)
+
+            elif embedding_config.get('type_hof_model_embeddings') == 'freq':
+                embed = Construct_Embedded_Nerf_Batch(input_batch=input_batch,
+                                                      num_frequencies=int(embedding_config['num_hof_model_embeddings']),
+                                                      device=device,
+                                                      embed_model=True,
+                                                      scale_freq=True,
+                                                      feature_tensor=feature_tensor)
+            else:
+                embed = Construct_Embedded_Nerf_Batch(input_batch=input_batch,
+                                                      num_frequencies=int(embedding_config['num_hof_model_embeddings']),
+                                                      device=device,
+                                                      embed_model=True,
+                                                      feature_tensor=feature_tensor)
 
             feature_embeds.append(embed)
+            
         input_batch_transformed = torch.cat([input_batch_transformed] + feature_embeds, dim=1)
 
     return input_batch_transformed

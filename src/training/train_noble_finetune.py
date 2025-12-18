@@ -34,9 +34,10 @@ def get_args() -> argparse.Namespace:
     parser.add_argument("--scheduler_factor", type=int, help="Factor for ReduceLROnPlateau scheduler")
 
     ## Embedding Parameters
-    parser.add_argument("--sine_embeddings_freq", type=int, help="Specifies whether to include sinusoidal embeddings. By default is None")
-    parser.add_argument("--scale_sine_embeddings", type=str, help="By default is null. If 'amp', scale the sine embeddings by the amplitude of the signal. If 'frew', scale the frequency of the sine embeddings by the amplitude of the signal")
-    parser.add_argument("--hof_model_embeddings", type=int, help="Whether to embed the Hall of Fame model. Either null, or number of frequencies to embed, scaled by hof_model firing curver shape parameters")
+    parser.add_argument("--num_current_embeddings", type=int, help="Number of sinusoidal embedding frequencies for encoding the stimulus current amplitude (set to None for no embeddings)")
+    parser.add_argument("--type_current_embeddings", type=str, help="By default is null. If 'amp', scale the sinusoidal embeddings for the stimulus current by the amplitude of the signal. If 'freq', scale the frequency of the sinusoidal embeddings")
+    parser.add_argument("--num_hof_model_embeddings", type=int, help="Number of sinusoidal embedding frequencies for encoding the Hall of Fame neuron model (set to None for no embeddings)")
+    parser.add_argument("--type_hof_model_embeddings", type=str, help="By default is null. If 'amp', scale the Hall of Fame neuron model embeddings by the amplitude of the features. If 'freq', scale the frequency of the Hall of Fame neuron model embeddings by the features")
     parser.add_argument("--e_features_to_embed", type=str, help="Comma-separated list of electrophysiological features to embed (e.g., 'slope,intercept' or empty string for none)")
     
     ## Training Parameters
